@@ -10,6 +10,7 @@ An example generated site can be viewed [HERE](https://infallible-brown-61ca35.n
 
 ## Usage
 To setup a store using templateBuild(): 
+
     - Download this repository and add a 'public' folder with your site's images and assets to the downloaded local copy.
     - Setup eCommerce AP.
     - Edit 'scriptTemplates/info-panel-template.txt' to:
@@ -22,7 +23,9 @@ To setup a store using templateBuild():
 
 
 ## Modifying
-To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', and '/scriptTemplates/info-panel-template.txt' will need to be edited.
+To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', 
+and '/scriptTemplates/info-panel-template.txt' will need to be edited.
+
     - templateBuild() renders the site's html from the '/views/index.pug' file, so edit most templating there.
     - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
    
