@@ -11,7 +11,7 @@ An example generated site can be viewed [HERE](https://infallible-brown-61ca35.n
 ## Usage
 To setup a store using templateBuild(): 
 
-    - Download this repository and add a 'public' folder with your site's images and assets to the downloaded local copy.
+    - Download this repository, its dependencies and add a 'public' folder with your site's images and assets to the downloaded local copy.
     - Setup eCommerce AP.
     - Edit 'scriptTemplates/info-panel-template.txt' to:
         - GET orderCount on init() to display in the viewCartButton
