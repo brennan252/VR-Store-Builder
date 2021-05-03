@@ -3,6 +3,7 @@ Streamline Virtual Reality eCommerce Development.
 
 ## About
 The VRStoreBuilder provides the templateBuild() function which generates a static website bundle for a VR webstore.
+
 The templateBuild() function takes an equirectangular image and store information to create a VR shopping experience. Users can interact with buttons and displays to interact with the equirectangular image.
 
 An example generated site can be viewed [HERE](https://infallible-brown-61ca35.netlify.app/): (NOTE: commerce functionality is not enabled in this demo).
