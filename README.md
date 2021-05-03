@@ -2,7 +2,7 @@
 Streamline Virtual Reality eCommerce Development.
 
 ## About
-The VRStoreBuilder provides the templateBuild() function which generates a static website bundle for a VR webstore.
+The VRStoreBuilder provides the templateBuild() function which generates a static AFRAME website bundle for a VR webstore.
 
 The templateBuild() function takes an equirectangular image and store information to create a VR shopping experience. Users can interact with buttons and displays to interact with the equirectangular image.
 
@@ -25,6 +25,7 @@ To setup a store using templateBuild():
 ## Modifying
 To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', 
 and '/scriptTemplates/info-panel-template.txt' will need to be edited.
+
     - templateBuild() renders the site's html from the '/views/index.pug' file, so edit most templating there.
     - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
    
