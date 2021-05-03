@@ -23,10 +23,10 @@ To setup a store using templateBuild():
 
 
 ## Modifying
-To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', 
-and '/scriptTemplates/info-panel-template.txt' will need to be edited.
+To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', templatePath, 
+and/or '/scriptTemplates/info-panel-template.txt' will need to be edited.
 
-    - templateBuild() renders the site's html from the '/views/index.pug' file, so edit most templating there.
+    - templateBuild() renders the site's html from the specified pug templatePath file, so edit most templating there.
     - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
    
 
