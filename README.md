@@ -9,33 +9,22 @@ The templateBuild() function takes an equirectangular image and store informatio
 An example generated site can be viewed [HERE](https://infallible-brown-61ca35.netlify.app/): (NOTE: commerce functionality is not enabled in this demo).
 
 ## Usage
-To setup a store using templateBuild(): 
-
+### To setup a store using templateBuild(): 
     - Download this repository and add a 'public' folder with your site's images and assets to the downloaded local copy.
-    
-    - Setup eCommerce AP. 
-    
+    - Setup eCommerce AP.
     - Edit 'scriptTemplates/info-panel-template.txt' to:
-    
         - GET orderCount on init() to display in the viewCartButton
-        
         - POST currentItem on addToOrder() call
-        
     - Prepare an array of objects for items (see '/buildUtitilities/data' for all the properties to include)
-    
-    - Run templateBuild() with all images, files, and links in their specified locations.
-    
+    - Run templateBuild() with all images, files, and links in their specified locations.   
     - Host 'public' folder on AWS, Netlify, Bluehost, etc.
-
     - Add button on main eCommerce linking to the VR site address
 
 
 ## Modifying
-To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', 
+### To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', '/views/index.pug', 
 and '/scriptTemplates/info-panel-template.txt' will need to be edited.
-
     - templateBuild() renders the site's html from the '/views/index.pug' file, so edit most templating there.
-    
     - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
    
 
