@@ -1,0 +1,123 @@
+/* AFRAME global */
+AFRAME.registerComponent('info-panel', {
+    schema: {
+        cartLink: { type: 'string', default: "http://www.aframe.io/" },
+        storeLink: { type: 'string', default: "http://www.aframe.io/"},
+    },
+    onMenuButtonClick: function (evt) {
+        var movieInfo = this.movieInfo[evt.currentTarget.id];
+        this.currentID = evt.currentTarget.id;
+
+        this.backgroundEl.object3D.scale.set(1, 1, 1);
+
+        this.el.object3D.scale.set(1, 1, 1);
+        if (AFRAME.utils.device.isMobile()) { 
+            //this.el.object3D.scale.set(1.4, 1.4, 1.4); 
+        }
+        this.el.object3D.visible = true;
+        this.fadeBackgroundEl.object3D.visible = true;
+        this.portal.object3D.visible = false;
+        this.viewCartButton.object3D.visible = false;
+        // this.storeLogoButton.object3D.visible = false;
+
+        // 
+        if (this.movieImageEl) { this.movieImageEl.object3D.visible = false; }
+        this.movieImageEl = movieInfo.imgEl;
+        this.movieImageEl.object3D.visible = true;
+
+        var buttonEls = document.querySelectorAll('.menu-button');
+        
+        for (var i = 0; i < buttonEls.length; ++i) {
+            buttonEls[i].object3D.visible = false;
+        }
+
+        this.movieTitleEl.setAttribute('text', 'value', movieInfo.title);
+        this.movieDescriptionEl.setAttribute('text', 'value', movieInfo.description);
+    },
+
+    onAddToCartClick: function (evt) {
+        this.cart.contents.push(this.currentID.replace('Button', ''));
+        var currentCount = this.cart.count;
+        var newCount = this.cart.count = currentCount + 1;
+        this.cartCountEl.setAttribute('text', 'value', "View Cart (".concat(newCount.toString(),")"));
+    },
+
+   onStoreLogoButtonClick: function (evt) {
+        var itemNames = this.cart.contents;
+        var link = this.data.storeLink;
+        windowObjectReference = window.open(link);
+    },
+
+    onViewCartButtonClick: function (evt) {        
+        var itemNames = this.cart.contents;
+        var link = this.data.cartLink;
+        windowObjectReference = window.open(link);
+    },
+
+    onInfoButtonClick: function (evt) {
+        var itemName = this.currentID.replace('Button', '');
+        var link = this.movieInfo[this.currentID].itemSite
+        windowObjectReference = window.open(link);
+    },
+
+    // check if menu item is in 'raycaster?' intersection points... if so, do not remove. 
+    // check if button was selected and if so add to cart
+    onBackgroundClick: function (evt) {
+        this.backgroundEl.object3D.scale.set(0.001, 0.001, 0.001);
+        this.el.object3D.scale.set(0.001, 0.001, 0.001);
+        this.el.object3D.visible = false;
+        this.fadeBackgroundEl.object3D.visible = false;
+        this.portal.object3D.visible = true;
+        this.viewCartButton.object3D.visible = true;
+        //this.storeLogoButton.object3D.visible = true;
+
+        var buttonEls = document.querySelectorAll('.menu-button');
+        for (var i = 0; i < buttonEls.length; ++i) {
+            buttonEls[i].object3D.visible = true;
+        }
+    },
+
+    init: function () {
+        var buttonEls = document.querySelectorAll('.menu-button');
+        var fadeBackgroundEl = this.fadeBackgroundEl = document.querySelector('#fadeBackground');
+        this.currentID;
+        this.movieImageEl;
+        this.movieTitleEl = document.querySelector('#movieTitle');
+        this.movieDescriptionEl = document.querySelector('#movieDescription');
+        this.cartCountEl = document.querySelector('#cartButtonText');
+        this.portal = document.querySelector('#linkPng');
+
+        this.cart = {
+            contents: [],
+            count: 0
+        };
+
+        this.addToCartButton = document.querySelector('.add-to-cart-button')
+        this.moreInfoButton = document.querySelector('.more-info-button');
+        this.viewCartButton = document.querySelector('.view-cart-button');
+        this.storeLogoButton = document.querySelector('.store-logo-button');
+
+
+        this.onMenuButtonClick = this.onMenuButtonClick.bind(this);
+        this.onBackgroundClick = this.onBackgroundClick.bind(this);
+        this.onAddToCartClick = this.onAddToCartClick.bind(this);
+        this.onInfoButtonClick = this.onInfoButtonClick.bind(this);
+        this.onViewCartButtonClick = this.onViewCartButtonClick.bind(this);
+        this.onStoreLogoButtonClick = this.onStoreLogoButtonClick.bind(this);
+
+        this.backgroundEl = document.querySelector('#background');
+        for (var i = 0; i < buttonEls.length; ++i) {
+            buttonEls[i].addEventListener('click', this.onMenuButtonClick);
+        }
+        this.backgroundEl.addEventListener('click', this.onBackgroundClick);
+        this.addToCartButton.addEventListener('click', this.onAddToCartClick);
+        this.moreInfoButton.addEventListener('click', this.onInfoButtonClick);
+        this.viewCartButton.addEventListener('click', this.onViewCartButtonClick);
+        this.storeLogoButton.addEventListener('click', this.onStoreLogoButtonClick);
+
+        this.el.object3D.renderOrder = 8;
+        this.el.object3D.depthTest = true;
+        fadeBackgroundEl.object3D.renderOrder = 9;
+        fadeBackgroundEl.getObject3D('mesh').material.depthTest = true;
+
+    // write to file on item changes in Node.js function

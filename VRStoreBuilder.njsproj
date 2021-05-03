@@ -1,0 +1,97 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>VRStoreBuilder</Name>
+    <RootNamespace>VRStoreBuilder</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>fd4b2815-acf5-4c66-b463-31d6f43149d9</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>templateBuild.js</StartupFile>
+    <StartWebBrowser>False</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <StartWebBrowser>false</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="buildUtilities\data\demoData.js" />
+    <Content Include="buildUtilities\data\redWineSceneData.js" />
+    <Content Include="buildUtilities\data\whiteWineSceneData.js" />
+    <Content Include="buildUtilities\rotatelink.js" />
+    <Content Include="buildUtilities\rotateToParallel.js" />
+    <Content Include="buildUtilities\sizeInfoPanelImages.js" />
+    <Content Include="buildUtilities\sizeLogo.js" />
+    <Content Include="buildUtilities\sizeLogoFrame.js" />
+    <Content Include="buildUtilities\sizePosterFrames.js" />
+    <Content Include="buildUtilities\sizePosterImages.js" />
+    <Content Include="buildUtilities\trimStrings.js" />
+    <Content Include="buildUtilities\utilities\getImageDims.js" />
+    <Content Include="images\favicon.png" />
+    <Content Include="images\greenLogo.png" />
+    <Content Include="images\VR-Store-Builder-Demo\redWineScene\IMG_1115.jpg" />
+    <Content Include="images\VR-Store-Builder-Demo\redWineScene\IMG_1116.jpg" />
+    <Content Include="images\VR-Store-Builder-Demo\redWineScene\IMG_1118.jpg" />
+    <Content Include="images\VR-Store-Builder-Demo\redWineScene\redWine360.JPG" />
+    <Content Include="images\VR-Store-Builder-Demo\redWineScene\whiteWineLink.png" />
+    <Content Include="images\VR-Store-Builder-Demo\whiteWineScene\IMG_1113.jpg" />
+    <Content Include="images\VR-Store-Builder-Demo\whiteWineScene\IMG_1114.jpg" />
+    <Content Include="images\VR-Store-Builder-Demo\whiteWineScene\redWineLink.png" />
+    <Content Include="images\VR-Store-Builder-Demo\whiteWineScene\whiteWine360.jpeg" />
+    <Content Include="scriptTemplates\info-panel-template.txt" />
+    <Content Include="templateBuild.js" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="tests\buildUtilities\getImageDims.test.js" />
+    <Content Include="tests\buildUtilities\rotateToParallel.test.js" />
+    <Content Include="tests\buildUtilities\sizeInfoPanelImages.test.js" />
+    <Content Include="tests\buildUtilities\sizeLogo.test.js" />
+    <Content Include="tests\buildUtilities\sizeLogoFrame.test.js" />
+    <Content Include="tests\buildUtilities\sizePosterFrames.test.js" />
+    <Content Include="tests\buildUtilities\sizePosterImages.test.js" />
+    <Content Include="tests\buildUtilities\trimStrings.test.js" />
+    <Content Include="tests\components\highlight.test.js" />
+    <Content Include="tests\components\info-panel.test.js" />
+    <Content Include="tests\templateBuild\mockedPublic\index.txt" />
+    <Content Include="tests\templateBuild\mockedPublic\javascripts\info-panel-index.txt" />
+    <Content Include="tests\templateBuild\mockedPublic\javascripts\info-panel.txt" />
+    <Content Include="tests\templateBuild\referenceShots\htmlGoal.txt" />
+    <Content Include="tests\templateBuild\referenceShots\jsGoal.txt" />
+    <Content Include="tests\templateBuild\test.js" />
+    <Content Include="views\error.pug" />
+    <Content Include="views\index.pug" />
+    <Content Include="views\layout.pug" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="buildUtilities\" />
+    <Folder Include="buildUtilities\data\" />
+    <Folder Include="buildUtilities\utilities\" />
+    <Folder Include="images\" />
+    <Folder Include="images\VR-Store-Builder-Demo\" />
+    <Folder Include="images\VR-Store-Builder-Demo\redWineScene\" />
+    <Folder Include="images\VR-Store-Builder-Demo\whiteWineScene\" />
+    <Folder Include="scriptTemplates\" />
+    <Folder Include="tests\" />
+    <Folder Include="tests\buildUtilities\" />
+    <Folder Include="tests\components\" />
+    <Folder Include="tests\templateBuild\" />
+    <Folder Include="tests\templateBuild\mockedPublic\" />
+    <Folder Include="tests\templateBuild\mockedPublic\javascripts\" />
+    <Folder Include="tests\templateBuild\referenceShots\" />
+    <Folder Include="views\" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+</Project>

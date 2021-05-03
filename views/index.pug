@@ -1,0 +1,38 @@
+extends layout
+
+block content
+    a-scene(color-space="sRGB" webxr="referenceSpaceType: local" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .raycastable" loading-screen="dotsColor: black; backgroundColor: "+brandPrimaryColor+";" device-orientation-permission-ui="enabled: true")
+        a-assets
+            img(id="sceneImage" src=imageLink crossorigin="anonymous")
+            img(id="logo" src=brandLogo crossorigin="anonymous")
+            a-mixin(id="storeButtonFrame" geometry="primitive: plane; width: 0.55; height: 0.25;" material="color: white; shader: flat" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+            each val in menuItems
+                img(id=val.title src=val.img crossorigin="anonymous")
+                a-mixin(id="ring"+val.title geometry="primitive: ring; radiusInner: 0.265; radiusOuter: 0.3" material="color: "+brandPrimaryColor+"; shader: flat;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+                a-mixin(id="movieImage"+val.title geometry="primitive: plane; width: "+val.imgWidth+"; height: "+val.imgHeight material="shader: flat; transparent: true" position="0 0.495 0.002")
+            img(id="portalImage" src=portalImageLink crossorigin="anonymous") 
+        a-sky(material="src: #sceneImage" rotation="0 -90 0") 
+        a-entity(id="background" position="0 0 0" geometry="primitive: sphere; radius: 2.0" material="color: red; side: back; shader: flat" scale="0.001 0.001 0.001" visible="false" class="raycastable")
+        a-entity(position="0 1.6 0" camera rotation="50 0 0" look-controls="magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true")
+            a-entity(id="fadeBackground" geometry="primitive: sphere; radius: 3;" material="color: black; side: back; shader: flat; transparent: true; opacity: 0.6; alphatTest: 0.5; " visible="false")
+            a-entity(id="infoPanel" position="0 0.068 -2" info-panel="cartLink: "+userCartLink+"; storeLink: "+storePageLink+";" scale="0.001, 0.001, 0.001" visible="false" geometry="primitive: plane; width: 1.5; height: 2.3;" material="color: white; shader: flat; alphaTest: 0.5; transparent: false;" class="raycastable")
+                each val in menuItems
+                    a-entity(id=val.title+"MovieImage" mixin="movieImage"+val.title material="src: #"+val.title+";" visible="false")
+                a-entity(id="movieTitle" position="0 -0.1 0" text="shader: msdf; align: center; width: 1; wrapCount: 24; font: roboto; color: black; value: "+menuItems[0].title+";")
+                a-entity(id="movieDescription" position="0 -0.22 0" text="baseline: top; shader: msdf; width: 0.9; wrapCount: 32; font: roboto; color: black; value: "+menuItems[0].description+";")
+                a-entity(id="addToCartButton" position="0 -0.37 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: "+brandPrimaryColor+"; shader: flat; transparent: false;" class="raycastable add-to-cart-button" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+                    a-entity(text="align: center; color: white; value: Add To Cart;")
+                a-entity(id="moreInfoButton" position="0 -.495 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: "+brandPrimaryColor+"; shader: flat; transparent: false;" class="raycastable more-info-button" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+                    a-entity(text="align: center; color: white; value: More Info;")
+            a-entity(id="viewCartButton" position="0 1.35 -1.9" geometry="primitive: plane; width: 0.7; height: 0.2;" material="color: "+brandPrimaryColor+"; shader: flat; transparent: false;" class="raycastable view-cart-button" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+                a-entity(id="cartButtonText" text="font: roboto; align: center; shader: msdf; width: 1.65; color: white; value: View Cart (0);")
+            a-entity(id="storeLogoButton" position="0 -1.3 -1.9" geometry="primitive: plane; width: "+logoDims.width+"; height: "+logoDims.height+";" material="src: #logo; shader: flat; alphaTest: 0.9; transparent: false;" class="raycastable store-logo-button" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+        a-entity(id="leftHand" laser-controls="hand: left" raycaster="objects: .raycastable")
+        a-entity(id="rightHand" laser-controls="hand: right" raycaster="objects: .raycastable" line="color: #118A7E")
+        a-entity(id="ui")
+        a-entity(link="href: "+linkPath+"; visualAspectEnabled: false; image: #portalImage; borderColor: "+brandPrimaryColor+";" position=linkPosition rotation=linkRotation class="raycastable" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+                a-entity(id="linkPng" geometry="primitive: plane; width: "+portalDims.width+"; height: "+portalDims.height+";" material="src: #portalImage; shader: flat; alphaTest: 0.9; transparent: true;" class="raycastable linkPng" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave")
+        a-entity(id="menu")
+            each val in menuItems
+                a-entity(id=val.title+"Button" rotation=val.rotation position=val.position mixin="ring"+val.title visible="true" class="raycastable menu-button")
+                    a-entity(geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.3" class="raycastable" visible="false")
