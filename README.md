@@ -37,8 +37,8 @@ The Demo was generated with this file:
     var templateBuild = require('./templateBuild');
     var redWines = require('./buildUtilities/data/redWineSceneData');
     var whiteWines = require('./buildUtilities/data/whiteWineSceneData');
-
-
+`
+`
     function compileBundle() {
         // index build (red wine)
         templateBuild(
