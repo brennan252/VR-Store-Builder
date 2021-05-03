@@ -11,13 +11,13 @@ An example generated site can be viewed [HERE](https://infallible-brown-61ca35.n
 ## Usage
 To setup a store using templateBuild(): 
 
-    - Download this repository, its dependencies and add a 'public' folder with your site's images and assets to the downloaded local copy.
-    - Setup eCommerce AP.
+    - Download this repository, its dependencies, and add a 'public' folder with your site's images and assets to the downloaded local copy.
+    - Setup your API with current eCommerce platform.
     - Edit 'scriptTemplates/info-panel-template.txt' to:
         - GET orderCount on init() to display in the viewCartButton
         - POST currentItem on addToOrder() call
     - Prepare an array of objects for items (see '/buildUtitilities/data' for all the properties to include)
-    - Run templateBuild() with all images, files, and links in their specified locations.   
+    - Call templateBuild() with all images, files, and links in their specified locations.   
     - Host 'public' folder on AWS, Netlify, Bluehost, etc.
     - Add button on main eCommerce linking to the VR site address
 
