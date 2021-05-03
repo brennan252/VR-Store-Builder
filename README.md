@@ -90,7 +90,7 @@ The objects in items property should look like this:
     'panelTitle': "Raymond Reserve Selection Merlo - Napa Valley 2018 ($8.99)",
     'description': "Opening with enticing aromas of roasted coffee, vanilla bean and black cherry, this is a structured and bold Merlot. A plush entry of cocoa, dried red fruit flavors and a touch of spice lead to a savory midpalate. This wine has a good velvety texture with fine-grained tannins and a long, rich finish.",
     'img': "/images/VR-Store-Builder-Demo/redWineScene/IMG_1116.jpg",
-    'imgFolder': "",
+    'imgFolder': "public/",
     'itemLink': "https://www.cocobonwines.com/",
     "position": "-0.865 1.1 -1.6",
     "rotation": "0 0 0"
