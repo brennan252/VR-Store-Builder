@@ -33,12 +33,12 @@ and '/scriptTemplates/info-panel-template.txt' will need to be edited.
 
 ## Example
 The Demo was generated with this file:
-`
+```
     var templateBuild = require('./templateBuild');
     var redWines = require('./buildUtilities/data/redWineSceneData');
     var whiteWines = require('./buildUtilities/data/whiteWineSceneData');
-`
-`
+```
+```
     function compileBundle() {
         // index build (red wine)
         templateBuild(
@@ -84,9 +84,9 @@ The Demo was generated with this file:
     }
 
     compileBundle();
-`
+```
 The objects in items property should look like this: 
-`
+```
     'title': "RaymondReserveSelectionMerlo",
     'panelTitle': "Raymond Reserve Selection Merlo - Napa Valley 2018 ($8.99)",
     'description': "Opening with enticing aromas of roasted coffee, vanilla bean and black cherry, this is a structured and bold Merlot. A plush entry of cocoa, dried red fruit flavors and a touch of spice lead to a savory midpalate. This wine has a good velvety texture with fine-grained tannins and a long, rich finish.",
@@ -95,7 +95,7 @@ The objects in items property should look like this:
     'itemLink': "https://www.cocobonwines.com/",
     "position": "-0.865 1.1 -1.6",
     "rotation": "0 0 0"
-`
+```
 ## Improvements
 - Allow greater customization directly through templateBuild().
 
