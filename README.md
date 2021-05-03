@@ -33,7 +33,7 @@ and '/scriptTemplates/info-panel-template.txt' will need to be edited.
 
 ## Example
 The Demo was generated with this file:
-`   // To Build store
+`
     var templateBuild = require('./templateBuild');
     var redWines = require('./buildUtilities/data/redWineSceneData');
     var whiteWines = require('./buildUtilities/data/whiteWineSceneData');
