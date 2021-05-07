@@ -108,7 +108,10 @@ The objects in items property should look like this:
 
 ## Testing
 ### Template Build
-Run: `npm run-script test-templateBuild` to make sure templateBuild generates html and javascript as expected
+Make sure the *goal.txt files are taken from the goal for templateBuild() (particularly if you expext changes to html 
+or js output code.
+
+Then, run: `npm run-script test-templateBuild` to make sure templateBuild generates html and javascript as expected.
 
 ### Expanding Coverage
 Should add Unit Tests for 'buildUtilities' and the Aframe component(right now just one 'info-panel-*' component).
