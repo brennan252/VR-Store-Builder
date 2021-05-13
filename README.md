@@ -1,6 +1,10 @@
 # VRStoreBuilder
 Streamline Virtual Reality eCommerce Development.
 
+## Adaption To Liquid Template
+This builder was adapted to create a Shopify custom VR Display section. Code for the section is in the 'vr-display.liquid' file.
+Since AFRAME can give headaches when embedding with dynamically laid out html/css, the 'theme.liquid' was editted to only include the header on the custom page for the vr-display section (instead of both the header and footer -- which all other pages include). Some z-index tweaks may be needed as well.
+
 ## About
 The VRStoreBuilder provides the templateBuild() function which generates a static AFRAME website bundle for a VR webstore.
 
@@ -20,16 +24,6 @@ To setup a store using templateBuild():
     - Call templateBuild() with all images, files, and links in their specified locations.   
     - Host 'public' folder on AWS, Netlify, Bluehost, etc.
     - Add button on main eCommerce linking to the VR site address
-
-
-## Modifying
-To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', templatePath, 
-and/or '/scriptTemplates/info-panel-template.txt' will need to be edited.
-
-    - templateBuild() renders the site's html from the specified pug templatePath file, so edit most templating there.
-    - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
-   
-
 
 ## Example
 The Demo was generated with this file:
@@ -95,6 +89,14 @@ The objects in items property should look like this:
     "position": "-0.865 1.1 -1.6",
     "rotation": "0 0 0"
 ```
+
+## Modifying
+To modify a site beyond what is possible through templateBuild()'s properties, 'templateBuild.js', templatePath, 
+and/or '/scriptTemplates/info-panel-template.txt' will need to be edited.
+
+    - templateBuild() renders the site's html from the specified pug templatePath file, so edit most templating there.
+    - templateBuild() reads the info-panel component code from './scriptTemplates/info-panel-template.txt' file, so edit most of the Javascript there.
+   
 ## Improvements
 - Allow greater customization directly through templateBuild().
 
