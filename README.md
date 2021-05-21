@@ -86,8 +86,7 @@ The objects in items property should look like this:
     'img': "/images/VR-Store-Builder-Demo/redWineScene/IMG_1116.jpg",
     'imgFolder': "public/",
     'itemLink': "https://www.cocobonwines.com/",
-    "position": "-0.865 1.1 -1.6",
-    "rotation": "0 0 0"
+    "position": "-0.865 1.1 -1.6"
 ```
 
 ## Modifying
