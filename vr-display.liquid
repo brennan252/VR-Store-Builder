@@ -1,6 +1,7 @@
 <script>
-// javascript functions
-// Aframe Components
+/* global AFRAME, THREE */
+
+  // Aframe Components
 
 AFRAME.registerComponent('info-panel', {
   schema: {
@@ -14,8 +15,6 @@ AFRAME.registerComponent('info-panel', {
     this.movieImageEl;
     this.movieTitleEl = document.querySelector('#movieTitle');
     this.movieDescriptionEl = document.querySelector('#movieDescription');
-    //this.cartCountEl = document.querySelector('#cartButtonText');
-    //this.portal = document.querySelector('#linkPng');
 
     this.cart = {
       contents: [],
@@ -24,29 +23,21 @@ AFRAME.registerComponent('info-panel', {
 
     this.addToCartButton = document.querySelector('.add-to-cart-button')
     this.moreInfoButton = document.querySelector('.more-info-button');
-    //this.viewCartButton = document.querySelector('.view-cart-button');
-    //this.storeLogoButton = document.querySelector('.store-logo-button');
+    this.closeInfoPanelButton = document.querySelector('.close-info-panel-button');
 
-
+	this.onCloseInfoPanelClick = this.onCloseInfoPanelClick.bind(this);
     this.onMenuButtonClick = this.onMenuButtonClick.bind(this);
-    this.onBackgroundClick = this.onBackgroundClick.bind(this);
     this.onAddToCartClick = this.onAddToCartClick.bind(this);
     this.onInfoButtonClick = this.onInfoButtonClick.bind(this);
-    //this.onViewCartButtonClick = this.onViewCartButtonClick.bind(this);
-    //this.onStoreLogoButtonClick = this.onStoreLogoButtonClick.bind(this);
 
     this.backgroundEl = document.querySelector('#background');
     for (var i = 0; i < buttonEls.length; ++i) {
       buttonEls[i].addEventListener('click', this.onMenuButtonClick);
-      //startingPosition = [buttonEls[i].object3D.position.x, buttonEls[i].object3D.position.y, buttonEls[i].object3D.position.z];
-      //rotation = rotateToParallel(startingPosition, [0, 1.6, 0]);
-      //buttonEls[i].object3D.rotation.y = rotation[1];//rotation[1]
     }
-    this.backgroundEl.addEventListener('click', this.onBackgroundClick);
+    
     this.addToCartButton.addEventListener('click', this.onAddToCartClick);
     this.moreInfoButton.addEventListener('click', this.onInfoButtonClick);
-    //this.viewCartButton.addEventListener('click', this.onViewCartButtonClick);
-    //this.storeLogoButton.addEventListener('click', this.onStoreLogoButtonClick);
+    this.closeInfoPanelButton.addEventListener('click', this.onCloseInfoPanelClick);
 
     this.el.object3D.renderOrder = 8;
     this.el.object3D.depthTest = true;
@@ -60,13 +51,16 @@ AFRAME.registerComponent('info-panel', {
         id: '{{ all_products[block.settings.vr_product].id  }}',
         variant: '{{ all_products[block.settings.vr_product].variants.first.id  }}' ,
         itemSite: '{{ shop_locale.root_url | append: all_products[block.settings.vr_product].url  }}' },
-        {% endfor %}
+         {% endfor %}
     };
+    
     this.movieInfo = items;
+    
   },
 
   onMenuButtonClick: function (evt) {
     var movieInfo = this.movieInfo[evt.currentTarget.id];
+    var cameraView = document.querySelector('#cameraView');
     this.currentID = evt.currentTarget.id;
 
     this.backgroundEl.object3D.scale.set(1, 1, 1);
@@ -75,10 +69,11 @@ AFRAME.registerComponent('info-panel', {
     if (AFRAME.utils.device.isMobile()) { 
       //this.el.object3D.scale.set(1.4, 1.4, 1.4); 
     }
+    
     this.el.object3D.visible = true;
+    
     this.fadeBackgroundEl.object3D.visible = true;
-
-
+ 
     if (this.movieImageEl) { this.movieImageEl.object3D.visible = false; }
     this.movieImageEl = movieInfo.imgEl;
     this.movieImageEl.object3D.visible = true;
@@ -87,16 +82,18 @@ AFRAME.registerComponent('info-panel', {
 
     for (var i = 0; i < buttonEls.length; ++i) {
       buttonEls[i].object3D.visible = false;
+      buttonEls[i].object3D.scale.set(0.001, 0.001, 0.001);
     }
 
     this.movieTitleEl.setAttribute('text', 'value', movieInfo.title);
     this.movieDescriptionEl.setAttribute('text', 'value', movieInfo.description);
+    
   },
 
-  // Post item id to cart
+
   onAddToCartClick: function (evt) {
  
-  var itemID = this.movieInfo[this.currentID].id;
+    var itemID = this.movieInfo[this.currentID].id;
 	var variantID = this.movieInfo[this.currentID].variant;
     
     var formData = {
@@ -119,16 +116,17 @@ AFRAME.registerComponent('info-panel', {
               .then(response => response.json())
               .then(data => { 
                 if(data.item_count > 0){
-  				        // add red dot to cart indicator
-					        var empty_cart_icon = document.querySelector('.site-header__cart-indicator');
-  					      empty_cart_icon.classList.remove('hide');
+  					// add red dot to cart indicator
+					var empty_cart_icon = document.querySelector('.site-header__cart-indicator');
+  					empty_cart_icon.classList.remove('hide');
   
-                  // show notificaiton--success banner bar
-                  var success_el = document.querySelector('.item-added-icon');
-  				        success_el.object3D.visible = true;
-                  setTimeout(function(){
-                    success_el.object3D.visible = false;
-                  }, 1000); 
+  					var success_el = document.querySelector('.item-added-icon');
+  				    success_el.object3D.visible = true;
+  					success_el.emit("visible");
+  					setTimeout(function(){
+						success_el.object3D.visible = false;
+  						
+                    }, 2500); 
                 };
               });
       }).catch((error) => {
@@ -136,63 +134,102 @@ AFRAME.registerComponent('info-panel', {
       });
   },
 
-  // Got To cart location
+  // Got To item location
   onInfoButtonClick: function (evt) { 
     var link = this.movieInfo[this.currentID].itemSite
     windowObjectReference = window.open(link, "_self");
   },
 
-  // check if menu item is in 'raycaster?' intersection points... if so, do not remove. 
-  // check if button was selected and if so add to cart
-  onBackgroundClick: function (evt) {
+  onCloseInfoPanelClick: function (evt) {
     this.backgroundEl.object3D.scale.set(0.001, 0.001, 0.001);
     this.el.object3D.scale.set(0.001, 0.001, 0.001);
     this.el.object3D.visible = false;
     this.fadeBackgroundEl.object3D.visible = false;
-    //this.portal.object3D.visible = true;
-    //this.viewCartButton.object3D.visible = true;
-    //this.storeLogoButton.object3D.visible = true;
 
     var buttonEls = document.querySelectorAll('.menu-button');
     for (var i = 0; i < buttonEls.length; ++i) {
       buttonEls[i].object3D.visible = true;
+      buttonEls[i].object3D.scale.set(1, 1, 1);
     }
   }
 });
 	
 </script>
 
-<a-scene
-	vr-mode-ui="enable: false"
+<a-scene 
+    vr-mode-ui="enabled: false"
     background="color: #212"
     cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .raycastable">
       <a-assets>
         <img id="sceneImage" src="{{ section.settings.img360 | img_url: '4096x2048' }}" crossorigin="anonymous"/>
         {% for block in section.blocks %}
-              <img id="{{ block.settings.vr_product | replace: ' ', '-' | camelcase }}" src="{{ block.settings.display_image | img_url: 'medium' }}" crossorigin="anonymous"></img>
+              <img id="{{ block.settings.vr_product | replace: ' ', '-' | camelcase }}" src="{{ block.settings.display_image | img_url: '600X800' }}" crossorigin="anonymous"></img>
               <a-mixin id="{{ 'ring ' | append: block.settings.vr_product | replace: ' ', '-' | camelcase }}" geometry="primitive: ring; radiusInner: 0.265; radiusOuter: 0.3" material="color: {{ section.settings.main_color }}; shader: flat;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"></a-mixin>
-              <a-mixin id="{{ 'movie Image ' | append: block.settings.vr_product | replace: ' ', '-' | camelcase }}" geometry="primitive: plane; width: 0.6075; height: 0.81" material="shader: flat; transparent: true" position="0 0.495 0.002"></a-mixin>
+              <a-mixin id="{{ 'movie Image ' | append: block.settings.vr_product | replace: ' ', '-' | camelcase }}" geometry="primitive: plane; width: 0.6075; height: 0.81" material="shader: flat; transparent: true;" position="0 0.38 0.0009"></a-mixin>
         {% endfor %}
       </a-assets>
   
 	  <a-sky material="src: #sceneImage" rotation="0 -90 0"></a-sky>
-      <a-entity class="raycastable" id="background" position="0 0 0" geometry="primitive: sphere; radius: 2.0" material="color: red; side: back; shader: flat" scale="0.001 0.001 0.001" visible="false"></a-entity>
-      <a-entity position="0 1.6 0" camera rotation="50 0 0" look-controls="magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true">
-        <a-entity id="fadeBackground" geometry="primitive: sphere; radius: 3;" material="color: black; side: back; shader: flat; transparent: true; opacity: 0.6; alphatTest: 0.5; " visible="false"></a-entity>
-        <a-entity class="raycastable" id="infoPanel" position="0 -0.25 -2" info-panel="cartLink: http://www.aframe.io/; storeLink: http://www.aframe.io/;" scale="0.001, 0.001, 0.001" visible="false" geometry="primitive: plane; width: 1.5; height: 2.3;" material="color: white; shader: flat; alphaTest: 0.5; transparent: false;">
+      <a-entity class="raycastable" id="background" position="0 0 0" geometry="primitive: sphere; radius: 3.0" material="color: red; side: back; shader: flat" scale="0.001 0.001 0.001" visible="false"></a-entity>
+      <a-entity id="cameraView" position="0 1.6 0" camera rotation="50 0 0" look-controls="magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true">
+        <a-entity id="fadeBackground" geometry="primitive: sphere; radius: 8;" material="color: black; side: back; shader: flat; transparent: true; opacity: 0.6; alphatTest: 0.5; " visible="false"></a-entity>
+        <a-entity class="raycastable" id="infoPanel" position="0 -0.3 -2" info-panel="cartLink: http://www.aframe.io/; storeLink: http://www.aframe.io/;" scale="0.001, 0.001, 0.001" visible="false" geometry="primitive: plane; width: 1.5; height: 2.2;" material="color: white; shader: flat; alphaTest: 0.5; transparent: false;">
+         {% assign curveWidth = 0.05 %}
+		  <a-entity position="0.775 0 0.0001" geometry="primitive: plane; width: {{ curveWidth }}; height: 2.2" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="-0.775 0 0.0001" geometry="primitive: plane; width: {{ curveWidth }}; height: 2.2;" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="0 1.125 0.0001" geometry="primitive: plane; width: 1.5; height: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="0 -1.125 0.0001" geometry="primitive: plane; width: 1.5; height: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+          
+          <a-entity position="-0.75 1.1 0.0001" geometry="primitive: circle; radius: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="0.75 1.1 0.0001" geometry="primitive: circle; radius: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="-0.75 -1.1 0.0001" geometry="primitive: circle; radius: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+          <a-entity position="0.75 -1.1 0.0001" geometry="primitive: circle; radius: {{ curveWidth }};" material="color: white; shader: flat; transparent: false;"></a-entity>
+
+          <a-entity class="raycastable close-info-panel-button" 
+			id="closeInfoPanelButton" 
+            geometry="primitive: circle; radius: 0.05;" 
+            material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"
+            position="0.28 0.625 1"
+            animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
+            animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"> 
+			     <a-entity 
+                      line="start: -0.018 -0.018 0.001; end:  0.018 0.018 0.001; color: white; opacity: 2;"
+                      line__2="start:  -0.018 0.018 0.001; end:  0.018 -0.018 0.001; color: white; opacity: 2;">
+                 </a-entity>
+          </a-entity>
           {% for block in section.blocks %}
-				<a-entity id="{{ block.settings.vr_product | append: ' Movie Image ' | replace: ' ', '-' |  camelcase }}" mixin="{{ 'movie Image ' | append: block.settings.vr_product | replace: ' ', '-' | camelcase }}" material="{{ block.settings.vr_product | replace: ' ', '-' | camelcase | prepend: 'src: #' }}" visible="false"></a-entity>
+				<a-entity  id="{{ block.settings.vr_product | append: ' Movie Image ' | replace: ' ', '-' |  camelcase }}" mixin="{{ 'movie Image ' | append: block.settings.vr_product | replace: ' ', '-' | camelcase }}" material="{{ block.settings.vr_product | replace: ' ', '-' | camelcase | prepend: 'src: #' }}" visible="false"></a-entity>
           {% endfor %}
-          <a-entity id="movieTitle" position="0 -0.1 0" text="shader: msdf; align: center; width: 1; wrapCount: 24; font: roboto; color: black; value: RaymondReserveSelectionMerlo;"></a-entity>
-          <a-entity id="movieDescription" position="0 -0.22 0" text="baseline: top; shader: msdf; width: 0.9; wrapCount: 32; font: roboto; color: black; value: Opening with enticing aromas of roasted coffee, vanilla bean and black cherry, this is a structured and bold Merlot. A plush entry of cocoa, dried red fruit flavors and a touch of spice lead to a savory midpalate. This wine h...;"></a-entity>
-          <a-entity class="raycastable add-to-cart-button" id="addToCartButton" position="0 -0.245 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
+          <a-entity id="movieTitle" position="0 -0.15 0" text="shader: msdf; align: center; width: 1; wrapCount: 24; font: roboto; color: black; value: RaymondReserveSelectionMerlo;"></a-entity>
+          <a-entity id="movieDescription" position="0 -0.27 0" text="baseline: top; shader: msdf; width: 0.9; wrapCount: 32; font: roboto; color: black; value: Opening with enticing aromas of roasted coffee, vanilla bean and black cherry, this is a structured and bold Merlot. A plush entry of cocoa, dried red fruit flavors and a touch of spice lead to a savory midpalate. This wine h...;"></a-entity>
+          <a-entity class="raycastable add-to-cart-button" id="addToCartButton" position="0 -0.2 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
             <a-entity text="align: center; color: white; value: Add To Cart;"></a-entity>
+            <a-circle color='{{ section.settings.main_color }}' shader="flat" radius="0.05" position="-0.25 0 -0.001"></a-circle>
+            <a-circle color='{{ section.settings.main_color }}' shader="flat" radius="0.05" position="0.25 0 -0.001"></a-circle>
           </a-entity>
-          <a-entity class="raycastable more-info-button" id="moreInfoButton" position="0 -.375 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
+          <a-entity class="raycastable more-info-button" id="moreInfoButton" position="0 -0.33 1" geometry="primitive: plane; width: 0.5; height: 0.1;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter" animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
             <a-entity text="align: center; color: white; value: More Info;"></a-entity>
+            <a-circle color='{{ section.settings.main_color }}' shader="flat" radius="0.05" position="-0.25 0 -0.001"></a-circle>
+            <a-circle color='{{ section.settings.main_color }}' shader="flat" radius="0.05" position="0.25 0 -0.001"></a-circle>
           </a-entity>
-          <a-entity class="item-added-icon" position="0 0.375 0.9" geometry="primitive: plane; width: 0.75; height: 0.5;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" visible="false">
-            <a-entity text="align: center; width: .8; wrapCount: 12; color: white; value: Item Added;"></a-entity>
+          {% assign cornerWidth = 0.05 %}
+          <a-entity class="item-added-icon" position="0 0.375 0.9" geometry="primitive: plane; width: 0.45; height: 0.4;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;" visible="false" animation__position="property: position; to: 0 0.375 0.9; from: 0 -0.1 0.4; dur: 1500; startEvents: visible;">
+            <a-entity position="0.25 0 0.0001" geometry="primitive: plane; width: {{ cornerWidth }}; height: 0.4;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="-0.25 0 0.0001" geometry="primitive: plane; width: {{ cornerWidth }}; height: 0.4;" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="0 0.225 0.0001" geometry="primitive: plane; width: 0.45; height: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="0 -0.225 0.0001" geometry="primitive: plane; width: 0.45; height: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            
+            <a-entity position="-0.225 0.2 0.0001" geometry="primitive: circle; radius: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="0.225 0.2 0.0001" geometry="primitive: circle; radius: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="-0.225 -0.2 0.0001" geometry="primitive: circle; radius: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            <a-entity position="0.225 -0.2 0.0001" geometry="primitive: circle; radius: {{ cornerWidth }};" material="color: {{ section.settings.main_color }}; shader: flat; transparent: false;"></a-entity>
+            
+            <a-entity text="align: center; width: .5; wrapCount: 12; color: white; value: Item Added;" position="0 0.07 0.0001" ></a-entity>
+             
+            
+            <a-entity 
+                      line="start: 0 -0.08 0.001; end:  -0.045 -0.035 0.001; color: white; opacity: 2;"
+                      line__2="start:  0 -0.08 0.001; end:  0.06 -.01 0.001; color: white; opacity: 2;"></a-entity>
           </a-entity>
         </a-entity>
       </a-entity>
