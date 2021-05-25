@@ -3,7 +3,11 @@ Streamline Virtual Reality eCommerce Development.
 
 ## Adaption To Liquid Template
 This builder was adapted to create a Shopify custom VR Display section. Code for the section is in the 'vr-display.liquid' file.
-the 'theme.liquid' was editted to only include the header on the custom page for the vr-display section (instead of both the header and footer -- which all other pages include). Some css tweaks may be needed depending on the theme.
+
+A sample site is [here](https://vr-builder-test-store.myshopify.com). 
+Give password 'virtual' and go to the 'Shop In Vr' section in the menu.
+
+The 'theme.liquid' was editted to only include the header on the custom page for the vr-display section (instead of both the header and footer -- which all other pages include). Some css tweaks may be needed depending on the theme.
 
 ## About
 The VRStoreBuilder provides the templateBuild() function which generates a static AFRAME website bundle for a VR webstore.
