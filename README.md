@@ -1,4 +1,4 @@
-# VRStoreBuilder
+# VR Store Builder
 Streamline Virtual Reality eCommerce Development.
 
 ![gif did not load](https://github.com/brennan252/VR-Store-Builder/blob/master/recording%20(1).gif)
