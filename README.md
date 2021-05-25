@@ -2,7 +2,8 @@
 Streamline Virtual Reality eCommerce Development.
 
 ![gif did not load](https://github.com/brennan252/VR-Store-Builder/blob/master/recording%20(1).gif)
-![gif did not load](https://github.com/brennan252/VR-Store-Builder/blob/master/recording%20.gif)
+
+![gif did not load](https://github.com/brennan252/VR-Store-Builder/blob/master/recording.gif)
 
 ## Adaption To Shopify Liquid Template
 This builder was adapted to create a Shopify custom VR Display section. Code for the section is in the 'vr-display.liquid' file.
